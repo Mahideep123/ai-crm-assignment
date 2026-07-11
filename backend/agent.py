@@ -221,7 +221,13 @@ def call_model(state: AgentState):
     if not any(isinstance(m, SystemMessage) for m in msgs):
         msgs = [SYSTEM_PROMPT] + list(msgs)
     response = llm_with_tools.invoke(msgs)
-    return {"messages": [response]}
+    # Explicitly carry forward form_state and action_type so they are not lost
+    # when LangGraph merges state after this node runs
+    return {
+        "messages": [response],
+        "form_state": state.get("form_state", {}),
+        "action_type": state.get("action_type", "none"),
+    }
 
 def call_tools(state: AgentState):
     last_message = state["messages"][-1]
