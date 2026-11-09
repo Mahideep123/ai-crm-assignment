@@ -174,8 +174,9 @@ GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
 tools = [log_interaction, edit_interaction, search_hcp, get_product_info, suggest_follow_up]
 tools_by_name = {t.name: t for t in tools}
 
+# Initialize Groq LLM - using instant model (separate token limit from versatile)
 llm = ChatGroq(
-    model="llama-3.3-70b-versatile",
+    model="llama-3.1-8b-instant",
     temperature=0,
     api_key=GROQ_API_KEY
 )
